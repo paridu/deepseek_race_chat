@@ -14,3 +14,5 @@ Prompt for coding with Race Framework
    ```bash
    git clone https://github.com/your-repo-url.git
    cd your-repo-folder
+2.pip install -r requirements.txt
+3.streamlit run main.py
