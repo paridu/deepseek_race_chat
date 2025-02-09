@@ -5,4 +5,4 @@ rich==13.9.4
 markdown-it-py==3.0.0
 pygments==2.19.1
 mdurl==0.1.2
-pillow==9.4.0
+pillow==8.3.2
