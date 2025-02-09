@@ -25,8 +25,8 @@ def call_deepseek_api(prompt, api_key):
 # ตั้งค่าหน้า Streamlit
 st.title("📝 RACE Framework Form Generator with AI Enhancement")
 
-# โหลด API Key จาก secrets.toml
-api_key = st.secrets["DEEPSEEK_API_KEY"]
+# เพิ่ม text box สำหรับกรอก API Key
+api_key_input = st.text_input("กรอก API Key ของ DeepSeek", type="password")
 
 # สร้างฟอร์มสำหรับกรอกข้อมูล
 with st.form("race_form"):
@@ -57,8 +57,8 @@ with st.form("race_form"):
     submitted = st.form_submit_button("สร้างและปรับปรุง Prompt")
 
 if submitted:
-    if not all([role, action, context, explanation, example_output]):
-        st.error("กรุณากรอกข้อมูลทุกส่วน!")
+    if not all([role, action, context, explanation, example_output, api_key_input]):
+        st.error("กรุณากรอกข้อมูลทุกส่วนและ API Key!")
     else:
         raw_prompt = f"""
 ### **1. Role**  
@@ -80,7 +80,7 @@ if submitted:
 ✅ **เคล็ดลับ**:  
 {tips}
 """
-        enhanced_prompt = call_deepseek_api(raw_prompt, api_key)
+        enhanced_prompt = call_deepseek_api(raw_prompt, api_key_input)
 
         if enhanced_prompt:
             st.success("Prompt ของคุณพร้อมแล้ว!")
