@@ -107,3 +107,5 @@ except ImportError as e:
     [Pillow Installation](https://pillow.readthedocs.io/en/latest/installation.html)
     หรือใช้ pillow-simd
     """)
+
+
