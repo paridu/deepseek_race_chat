@@ -5,7 +5,7 @@ import requests
 def call_deepseek_api(prompt, api_key):
     url = "https://api.deepseek.com/v1/chat/completions"
     headers = {
-        "Authorization": f"Bearer {api_key}",
+        "Authorization": f"Bearer {api_key}",  # ใช้ API Key ที่ถูกต้อง
         "Content-Type": "application/json"
     }
     data = {
@@ -16,7 +16,7 @@ def call_deepseek_api(prompt, api_key):
     try:
         with st.spinner("กำลังปรับปรุงคำสั่งด้วย AI..."):
             response = requests.post(url, headers=headers, json=data)
-            response.raise_for_status()
+            response.raise_for_status()  # ตรวจสอบข้อผิดพลาด
             return response.json()["choices"][0]["message"]["content"]
     except requests.exceptions.RequestException as e:
         st.error(f"เกิดข้อผิดพลาดขณะเชื่อมต่อ API: {e}")
@@ -96,31 +96,3 @@ if submitted:
                     file_name="enhanced_race_prompt.txt",
                     mime="text/plain"
                 )
-
-# ตรวจสอบการติดตั้งไลบรารีที่จำเป็น
-try:
-    from PIL import Image
-except ImportError as e:
-    st.error("เกิดข้อผิดพลาดในการติดตั้ง Pillow: " + str(e))
-    st.write("""
-    ไม่สามารถติดตั้ง Pillow ได้ แนะนำให้ใช้ไลบรารี ImageIO แทน:
-    ```bash
-    pip install imageio
-    ```
-    หรือหากต้องการใช้ OpenCV:
-    ```bash
-    pip install opencv-python
-    """)
-    # ตัวอย่างการใช้งาน ImageIO
-    try:
-        import imageio
-        st.success("ImageIO ติดตั้งเรียบร้อยแล้ว!")
-    except ImportError:
-        st.error("ไม่สามารถติดตั้ง ImageIO ได้ โปรดติดตั้งใหม่")
-    
-    # ตัวอย่างการใช้งาน OpenCV
-    try:
-        import cv2
-        st.success("OpenCV ติดตั้งเรียบร้อยแล้ว!")
-    except ImportError:
-        st.error("ไม่สามารถติดตั้ง OpenCV ได้ โปรดติดตั้งใหม่")
