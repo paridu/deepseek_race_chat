@@ -97,15 +97,30 @@ if submitted:
                     mime="text/plain"
                 )
 
-# เพิ่มคำแนะนำการติดตั้ง Pillow และ dependencies
+# ตรวจสอบการติดตั้งไลบรารีที่จำเป็น
 try:
     from PIL import Image
 except ImportError as e:
-    st.error("เกิดข้อผิดพลาดในการติดตั้ง Pillow หรือ Pillow-SIMD: " + str(e))
+    st.error("เกิดข้อผิดพลาดในการติดตั้ง Pillow: " + str(e))
     st.write("""
-    ดูวิธีการติดตั้ง Pillow ที่นี่: 
-    [Pillow Installation](https://pillow.readthedocs.io/en/latest/installation.html)
-    หรือใช้ pillow-simd
+    ไม่สามารถติดตั้ง Pillow ได้ แนะนำให้ใช้ไลบรารี ImageIO แทน:
+    ```bash
+    pip install imageio
+    ```
+    หรือหากต้องการใช้ OpenCV:
+    ```bash
+    pip install opencv-python
     """)
-
-
+    # ตัวอย่างการใช้งาน ImageIO
+    try:
+        import imageio
+        st.success("ImageIO ติดตั้งเรียบร้อยแล้ว!")
+    except ImportError:
+        st.error("ไม่สามารถติดตั้ง ImageIO ได้ โปรดติดตั้งใหม่")
+    
+    # ตัวอย่างการใช้งาน OpenCV
+    try:
+        import cv2
+        st.success("OpenCV ติดตั้งเรียบร้อยแล้ว!")
+    except ImportError:
+        st.error("ไม่สามารถติดตั้ง OpenCV ได้ โปรดติดตั้งใหม่")
