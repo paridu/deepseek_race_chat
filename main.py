@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-# กำหนดฟังก์ชันสำหรับการเชื่อมต่อ API ของ DeepSeek
+# ฟังก์ชันสำหรับการเชื่อมต่อ API ของ DeepSeek
 def call_deepseek_api(prompt, api_key):
     url = "https://api.deepseek.com/v1/chat/completions"
     headers = {
@@ -80,14 +80,29 @@ if submitted:
 ✅ **เคล็ดลับ**:  
 {tips}
 """
-        enhanced_prompt = call_deepseek_api(raw_prompt, api_key_input)
+        
+        # ตรวจสอบว่า API Key ถูกกรอกแล้ว
+        if api_key_input == "":
+            st.error("กรุณากรอก API Key!")
+        else:
+            enhanced_prompt = call_deepseek_api(raw_prompt, api_key_input)
 
-        if enhanced_prompt:
-            st.success("Prompt ของคุณพร้อมแล้ว!")
-            st.code(enhanced_prompt, language="plaintext")
-            st.download_button(
-                label="ดาวน์โหลด Prompt",
-                data=enhanced_prompt,
-                file_name="enhanced_race_prompt.txt",
-                mime="text/plain"
-            )
+            if enhanced_prompt:
+                st.success("Prompt ของคุณพร้อมแล้ว!")
+                st.code(enhanced_prompt, language="plaintext")
+                st.download_button(
+                    label="ดาวน์โหลด Prompt",
+                    data=enhanced_prompt,
+                    file_name="enhanced_race_prompt.txt",
+                    mime="text/plain"
+                )
+
+# เพิ่มคำแนะนำการติดตั้ง Pillow และ dependencies
+try:
+    from PIL import Image
+except ImportError as e:
+    st.error("เกิดข้อผิดพลาดในการติดตั้ง Pillow: " + str(e))
+    st.write("""
+    ดูวิธีการติดตั้ง Pillow ที่นี่: 
+    [Pillow Installation](https://pillow.readthedocs.io/en/latest/installation.html)
+    """)
