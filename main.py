@@ -101,8 +101,9 @@ if submitted:
 try:
     from PIL import Image
 except ImportError as e:
-    st.error("เกิดข้อผิดพลาดในการติดตั้ง Pillow: " + str(e))
+    st.error("เกิดข้อผิดพลาดในการติดตั้ง Pillow หรือ Pillow-SIMD: " + str(e))
     st.write("""
     ดูวิธีการติดตั้ง Pillow ที่นี่: 
     [Pillow Installation](https://pillow.readthedocs.io/en/latest/installation.html)
+    หรือใช้ pillow-simd
     """)
