@@ -1,11 +1,10 @@
 import streamlit as st
 import requests
 
-# ฟังก์ชันสำหรับการเชื่อมต่อ API ของ DeepSeek
 def call_deepseek_api(prompt, api_key):
     url = "https://api.deepseek.com/v1/chat/completions"
     headers = {
-        "Authorization": f"Bearer {api_key}",  # ใช้ API Key ที่ถูกต้อง
+        "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
     data = {
@@ -16,16 +15,19 @@ def call_deepseek_api(prompt, api_key):
     try:
         with st.spinner("กำลังปรับปรุงคำสั่งด้วย AI..."):
             response = requests.post(url, headers=headers, json=data)
-            response.raise_for_status()  # ตรวจสอบข้อผิดพลาด
+            response.raise_for_status()  # ถ้าเกิดข้อผิดพลาดจะไปที่ except block
             return response.json()["choices"][0]["message"]["content"]
     except requests.exceptions.RequestException as e:
-        st.error(f"เกิดข้อผิดพลาดขณะเชื่อมต่อ API: {e}")
+        if e.response.status_code == 402:
+            st.error("ข้อผิดพลาด 402: ต้องมีการชำระเงินเพื่อใช้บริการนี้.")
+            st.write("โปรดตรวจสอบแผนบริการ API หรือไปที่หน้า [DeepSeek Pricing](https://deepseek.com/pricing) สำหรับข้อมูลเพิ่มเติม.")
+        else:
+            st.error(f"เกิดข้อผิดพลาดขณะเชื่อมต่อ API: {e}")
         return None
 
-# ตั้งค่าหน้า Streamlit
+# ฟังก์ชันหลักที่ใช้ Streamlit
 st.title("📝 RACE Framework Form Generator with AI Enhancement")
 
-# เพิ่ม text box สำหรับกรอก API Key
 api_key_input = st.text_input("กรอก API Key ของ DeepSeek", type="password")
 
 # สร้างฟอร์มสำหรับกรอกข้อมูล
