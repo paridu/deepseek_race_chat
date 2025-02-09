@@ -1,8 +1,8 @@
-pip==25.0
 streamlit==1.24.0
 requests==2.31.0
 rich==13.9.4
 markdown-it-py==3.0.0
 pygments==2.19.1
 mdurl==0.1.2
-pillow==8.3.2
+opencv-python==4.7.0.72  # ใช้ OpenCV แทน Pillow
+imageio==2.22.0          # หรือใช้ ImageIO แทน Pillow
