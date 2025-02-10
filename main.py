@@ -169,32 +169,10 @@ if submitted:
 
 ### 6. Tips
 {form_data['tips']}
-"""
+    """
+    st.subheader("Prompt ที่ปรับปรุงแล้ว")
+    result = call_openrouter_api(raw_prompt, api_key, site_url, site_name)
     
-    enhanced_prompt = call_openrouter_api(raw_prompt, api_key, site_url, site_name)
-    
-    if enhanced_prompt:
-        st.success("✅ ได้รับ Prompt ที่ปรับปรุงแล้วเรียบร้อย!")
-        
-        tabs = st.tabs(["ผลลัพธ์", "เปรียบเทียบ", "ข้อมูลดิบ"])
-        with tabs[0]:
-            st.code(enhanced_prompt, language="markdown")
-            
-            st.download_button(
-                label="📥 ดาวน์โหลด Prompt",
-                data=enhanced_prompt,
-                file_name="enhanced_prompt.md",
-                mime="text/markdown"
-            )
-        
-        with tabs[1]:
-            col1, col2 = st.columns(2)
-            with col1:
-                st.subheader("ต้นฉบับ")
-                st.write(raw_prompt)
-            with col2:
-                st.subheader("ปรับปรุงแล้ว")
-                st.write(enhanced_prompt)
-        
-        with tabs[2]:
-            st.json(response.json())  # แสดงข้อมูล response เต็มรูปแบบ
+    if result:
+        st.markdown(f"```{result}```")
+        st.download_button("💾 ดาวน์โหลด Prompt", result, file_name="generated_prompt.txt", mime="text/plain")
