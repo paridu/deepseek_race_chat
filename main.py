@@ -25,11 +25,13 @@ def call_openrouter_api(prompt, api_key, site_url=None, site_name=None):
     try:
         with st.spinner("🔮 AI กำลังปรับปรุง Prompt ของคุณ..."):
             response = requests.post(url, headers=headers, json=data)
-            response.raise_for_status()
-            result = response.json()
+            response.raise_for_status()  # ตรวจสอบสถานะการตอบกลับจาก API
+            
+            result = response.json()  # แปลงข้อมูลที่ได้จาก API
             return result['choices'][0]['message']['content']
             
     except requests.exceptions.HTTPError as e:
+        # การจัดการข้อผิดพลาดจาก HTTP Request
         error_info = e.response.json().get('error', {})
         error_code = error_info.get('code', 'unknown')
         error_message = error_info.get('message', 'Unknown error')
@@ -44,9 +46,18 @@ def call_openrouter_api(prompt, api_key, site_url=None, site_name=None):
             """)
         return None
         
+    except requests.exceptions.ConnectionError:
+        st.error("🚨 ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ OpenRouter ได้ โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของคุณ")
+        return None
+
+    except requests.exceptions.Timeout:
+        st.error("🚨 การเชื่อมต่อ API เกินเวลา โปรดลองใหม่อีกครั้ง")
+        return None
+
     except Exception as e:
         st.error(f"🚨 เกิดข้อผิดพลาดที่ไม่คาดคิด: {str(e)}")
         return None
+
 
 # ส่วนติดต่อผู้ใช้ด้วย Streamlit
 st.set_page_config(page_title="RACE Prompt Generator", page_icon="🚀", layout="wide")
@@ -129,7 +140,7 @@ if submitted:
         st.stop()
         
     if not all(form_data.values()):
-        st.error("กรุณากรอกข้อมูลทุกช่อง!")
+        st.error("กรุณากรอกข้อมูลทุกช่อง! ข้อมูลที่ขาดหายไปจะถูกแสดงในฟอร์ม")
         st.stop()
 
     raw_prompt = f"""
