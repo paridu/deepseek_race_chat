@@ -59,30 +59,129 @@ def call_openrouter_api(prompt, api_key, site_url=None, site_name=None):
 
 # ตัวอย่างชุดคำสั่ง
 EXAMPLE_TEMPLATES = {
-    "เชฟอาหารไทย": {
-        "role": "คุณคือเชฟผู้เชี่ยวชาญด้านอาหารไทยที่มีประสบการณ์ในการปรุงอาหารไทยมากกว่า 20 ปี",
-        "action": "ให้คำแนะนำและสอนขั้นตอนการปรุงอาหารไทยอย่างละเอียด พร้อมเทคนิคพิเศษ",
-        "context": "คุณกำลังให้คำแนะนำสำหรับผู้ที่สนใจทำอาหารไทย โดยใช้วัตถุดิบที่หาได้ง่ายในท้องถิ่น",
-        "explanation": "ระบุรายชื่อวัตถุดิบที่จำเป็น วิธีการเลือกวัตถุดิบ และขั้นตอนการเตรียม",
-        "example_output": "รายการวัตถุดิบ:\n- ส่วนผสมหลัก\n- เครื่องปรุง\n\nขั้นตอนการทำ:\n1. การเตรียมวัตถุดิบ\n2. การปรุง\n3. การจัดเสิร์ฟ",
-        "tips": "เคล็ดลับการเลือกวัตถุดิบและการปรุงให้ได้รสชาติแบบต้นตำรับ"
+    "Streamlit App Developer": {
+        "role": "คุณคือนักพัฒนา Python ที่เชี่ยวชาญในการสร้างแอพพลิเคชันด้วย Streamlit และมีประสบการณ์ในการพัฒนา web application มากกว่า 5 ปี",
+        "action": "ออกแบบและพัฒนาแอพพลิเคชัน Streamlit ที่มีประสิทธิภาพ ใช้งานง่าย และมีฟีเจอร์ครบถ้วนตามความต้องการ",
+        "context": "กำลังพัฒนาแอพพลิเคชันสำหรับการวิเคราะห์และแสดงผลข้อมูล โดยต้องการให้ผู้ใช้สามารถอัพโหลดไฟล์ จัดการข้อมูล และดูผลการวิเคราะห์ได้",
+        "explanation": """โครงสร้างแอพพลิเคชันประกอบด้วย:
+1. ส่วนอัพโหลดและจัดการข้อมูล
+2. ส่วนประมวลผลและวิเคราะห์
+3. ส่วนแสดงผลและ visualization
+4. ระบบจัดการ state และ cache""",
+        "example_output": """# โครงสร้างโค้ด Streamlit
+1. การตั้งค่าเริ่มต้น
+   - Import libraries
+   - Page config
+   - Session state
+
+2. ฟังก์ชันหลัก
+   - Data processing
+   - Analysis functions
+   - Visualization functions
+
+3. UI Components
+   - Sidebar options
+   - Main content
+   - Interactive elements
+
+4. การจัดการข้อมูล
+   - File upload
+   - Data validation
+   - Caching
+
+5. การแสดงผล
+   - Charts/Graphs
+   - Tables
+   - Download options""",
+        "tips": """1. ใช้ st.cache_data สำหรับฟังก์ชันที่ประมวลผลนาน
+2. จัดการ state ด้วย session_state
+3. แบ่ง code เป็นโมดูลที่จัดการง่าย
+4. ใช้ st.spinner() แสดงสถานะการประมวลผล
+5. สร้าง error handling ที่เหมาะสม"""
     },
-    "นักเขียนบทความ": {
-        "role": "คุณคือนักเขียนบทความมืออาชีพที่มีประสบการณ์ในการเขียนบทความที่น่าสนใจและเข้าใจง่าย",
-        "action": "เขียนบทความที่น่าสนใจและมีประโยชน์ต่อผู้อ่าน ด้วยภาษาที่เข้าใจง่าย",
-        "context": "บทความนี้จะถูกเผยแพร่ในบล็อกที่มีผู้อ่านหลากหลายกลุ่ม",
-        "explanation": "โครงสร้างบทความประกอบด้วย บทนำ เนื้อหา และบทสรุป พร้อมตัวอย่างและกรณีศึกษา",
-        "example_output": "หัวข้อบทความ\n\nบทนำ\n- Hook ดึงดูดความสนใจ\n- ประเด็นสำคัญ\n\nเนื้อหา\n1. หัวข้อย่อย\n2. ตัวอย่างประกอบ\n\nบทสรุป",
-        "tips": "ใช้ภาษาที่เข้าใจง่าย มีตัวอย่างประกอบ และจบด้วย Call to Action"
+    "ML App Developer": {
+        "role": "คุณคือผู้เชี่ยวชาญด้าน Machine Learning ที่มีประสบการณ์ในการพัฒนาโมเดลและสร้างแอพพลิเคชัน ML",
+        "action": "ออกแบบและพัฒนาแอพพลิเคชัน Machine Learning ที่สามารถทำนายผลลัพธ์ได้แม่นยำและใช้งานง่าย",
+        "context": "กำลังพัฒนาแอพพลิเคชัน ML สำหรับการทำนายผลลัพธ์จากข้อมูลที่ผู้ใช้ป้อนเข้ามา โดยต้องการให้มีความแม่นยำและประสิทธิภาพสูง",
+        "explanation": """ขั้นตอนการพัฒนาแอพพลิเคชัน ML:
+1. การเตรียมข้อมูลและโมเดล
+2. การสร้าง pipeline การประมวลผล
+3. การพัฒนา UI สำหรับรับข้อมูล
+4. การแสดงผลการทำนาย
+5. การ monitor และปรับปรุงโมเดล""",
+        "example_output": """# โครงสร้างแอพพลิเคชัน ML
+1. Data Pipeline
+   - Data preprocessing
+   - Feature engineering
+   - Model training
+
+2. Model Management
+   - Model loading
+   - Prediction pipeline
+   - Model monitoring
+
+3. UI Components
+   - Input forms
+   - Model selection
+   - Results display
+
+4. Performance Metrics
+   - Accuracy metrics
+   - Confusion matrix
+   - ROC curves
+
+5. Deployment
+   - Model serving
+   - API endpoints
+   - Monitoring dashboard""",
+        "tips": """1. ใช้ pipeline ในการจัดการข้อมูลและโมเดล
+2. เก็บ metrics เพื่อติดตามประสิทธิภาพ
+3. ทำ cross-validation เพื่อประเมินโมเดล
+4. ใช้ feature importance ในการอธิบายผล
+5. สร้างระบบ monitoring เพื่อติดตาม model drift"""
     },
-    "ที่ปรึกษาการลงทุน": {
-        "role": "คุณคือที่ปรึกษาการลงทุนที่มีประสบการณ์และความเชี่ยวชาญในการวางแผนการเงิน",
-        "action": "วิเคราะห์และให้คำแนะนำเกี่ยวกับการลงทุนและการวางแผนการเงิน",
-        "context": "ให้คำปรึกษาแก่นักลงทุนที่ต้องการวางแผนการเงินระยะยาว",
-        "explanation": "วิเคราะห์สถานการณ์ทางการเงิน กำหนดเป้าหมาย และวางแผนการลงทุน",
-        "example_output": "1. การวิเคราะห์สถานะทางการเงิน\n2. เป้าหมายการลงทุน\n3. แผนการลงทุน\n4. การติดตามและปรับแผน",
-        "tips": "พิจารณาความเสี่ยงและผลตอบแทน พร้อมการกระจายการลงทุน"
+    "Data Dashboard Designer": {
+        "role": "คุณคือนักวิเคราะห์ข้อมูลที่เชี่ยวชาญในการออกแบบ dashboard และการหา insights จากข้อมูล",
+        "action": "ออกแบบและพัฒนา dashboard ที่สามารถแสดงข้อมูลสำคัญและ insights ได้อย่างมีประสิทธิภาพ",
+        "context": "กำลังพัฒนา dashboard สำหรับวิเคราะห์และนำเสนอข้อมูลทางธุรกิจ โดยต้องการให้ผู้ใช้สามารถเห็นภาพรวมและเจาะลึกข้อมูลได้",
+        "explanation": """องค์ประกอบของ Dashboard:
+1. Overview metrics (KPIs)
+2. Trend analysis
+3. Comparative analysis
+4. Detailed drill-down views
+5. Interactive filters""",
+        "example_output": """# โครงสร้าง Dashboard
+1. Main KPIs
+   - Revenue metrics
+   - Growth indicators
+   - Performance metrics
+
+2. Trend Analysis
+   - Time series charts
+   - Growth patterns
+   - Seasonality analysis
+
+3. Comparative Views
+   - Period comparisons
+   - Category analysis
+   - Geographic distribution
+
+4. Detailed Analysis
+   - Data tables
+   - Drill-down capability
+   - Custom filters
+
+5. Insights Section
+   - Key findings
+   - Recommendations
+   - Action items""",
+        "tips": """1. เริ่มจากภาพรวมแล้วค่อยเจาะลึก
+2. ใช้สีและการจัดวางที่เหมาะสม
+3. สร้าง interactive elements
+4. มี consistent design
+5. ใส่ context และคำอธิบายที่จำเป็น"""
     }
+}
 }
 
 # ตั้งค่าหน้าเพจ
