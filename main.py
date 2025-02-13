@@ -2,7 +2,15 @@ import streamlit as st
 import requests
 import json
 
-def call_openrouter_api(prompt, api_key, site_url=None, site_name=None):
+# กำหนดรายการโมเดล AI ที่รองรับ
+AI_MODELS = {
+    "OpenRouter - Deepseek": "deepseek/deepseek-r1-distill-llama-70b:free",
+    "OpenRouter - Mistral": "mistral/mistral-7b-instruct",
+    "OpenAI - GPT-3.5": "openai/gpt-3.5-turbo",
+    "OpenAI - GPT-4": "openai/gpt-4"
+}
+
+def call_openrouter_api(prompt, api_key, model_name, site_url=None, site_name=None):
     url = "https://openrouter.ai/api/v1/chat/completions"
     
     headers = {
@@ -13,7 +21,7 @@ def call_openrouter_api(prompt, api_key, site_url=None, site_name=None):
     }
     
     data = {
-        "model": "deepseek/deepseek-r1-distill-llama-70b:free",
+        "model": AI_MODELS[model_name],
         "messages": [{
             "role": "user", 
             "content": f"ปรับปรุงโครงสร้างและภาษาของ Prompt นี้ให้เป็นมืออาชีพมากขึ้น โดยคงโครงสร้าง RACE Framework ดั้งเดิม:\n\n{prompt}"
@@ -196,13 +204,35 @@ st.markdown("""
 
 # Sidebar configuration
 with st.sidebar:
-    st.header("การตั้งค่า")
-    api_key = st.text_input("OpenRouter API Key", type="password", 
-                           help="รับ API Key ได้ที่: https://openrouter.ai/keys")
-    site_url = st.text_input("เว็บไซต์ของคุณ (ไม่จำเป็น)", 
-                            placeholder="https://your-website.com")
-    site_name = st.text_input("ชื่อเว็บไซต์ (ไม่จำเป็น)", 
-                             placeholder="My Awesome App")
+    st.header("⚙️ การตั้งค่า")
+    
+    # เลือกโมเดล AI
+    st.subheader("🤖 เลือกโมเดล AI")
+    selected_model = st.selectbox(
+        "เลือกโมเดลที่ต้องการใช้งาน",
+        options=list(AI_MODELS.keys()),
+        help="เลือกโมเดล AI ที่ต้องการใช้ในการปรับปรุง Prompt"
+    )
+    
+    st.markdown("---")
+    
+    # การตั้งค่า API
+    st.subheader("🔑 การตั้งค่า API")
+    api_key = st.text_input(
+        "OpenRouter API Key", 
+        type="password", 
+        help="รับ API Key ได้ที่: https://openrouter.ai/keys"
+    )
+    
+    site_url = st.text_input(
+        "เว็บไซต์ของคุณ (ไม่จำเป็น)", 
+        placeholder="https://your-website.com"
+    )
+    
+    site_name = st.text_input(
+        "ชื่อเว็บไซต์ (ไม่จำเป็น)", 
+        placeholder="My Awesome App"
+    )
     
     st.markdown("---")
     
@@ -311,7 +341,7 @@ if submitted:
     """
     
     st.subheader("Prompt ที่ปรับปรุงแล้ว")
-    result = call_openrouter_api(raw_prompt, api_key, site_url, site_name)
+    result = call_openrouter_api(raw_prompt, api_key, selected_model, site_url, site_name)
     
     if result:
         st.markdown(f"```{result}```")
