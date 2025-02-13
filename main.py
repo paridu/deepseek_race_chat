@@ -38,8 +38,13 @@ EXAMPLE_TEMPLATES = {
 # ตั้งค่าหน้าเพจ
 st.set_page_config(page_title="RACE Prompt Generator", page_icon="🚀", layout="wide")
 
-# แสดงรูปภาพ Cover
-st.image("/api/placeholder/800/200", caption="RACE Framework Prompt Generator")
+# แสดงรูปภาพ Cover และ Header
+st.markdown("""
+    <div style='background-color: #f0f2f6; padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1rem;'>
+        <h1 style='text-align: center; color: #0e1117;'>🚀 RACE Framework Prompt Generator</h1>
+        <p style='text-align: center; color: #0e1117;'>สร้าง Prompt ระดับมืออาชีพด้วย AI จาก OpenRouter</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.title("🚀 RACE Framework Prompt Generator")
 st.caption("สร้าง Prompt ระดับมืออาชีพด้วย AI จาก OpenRouter")
