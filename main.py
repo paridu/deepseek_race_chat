@@ -3,9 +3,59 @@ import requests
 import json
 
 def call_openrouter_api(prompt, api_key, site_url=None, site_name=None):
-    # [API calling function remains the same]
-    # ... [previous implementation]
-    pass
+    url = "https://openrouter.ai/api/v1/chat/completions"
+    
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "HTTP-Referer": site_url or "",
+        "X-Title": site_name or ""
+    }
+    
+    data = {
+        "model": "deepseek/deepseek-r1-distill-llama-70b:free",
+        "messages": [{
+            "role": "user", 
+            "content": f"ปรับปรุงโครงสร้างและภาษาของ Prompt นี้ให้เป็นมืออาชีพมากขึ้น โดยคงโครงสร้าง RACE Framework ดั้งเดิม:\n\n{prompt}"
+        }],
+        "temperature": 0.7,
+        "max_tokens": 2000
+    }
+
+    try:
+        with st.spinner("🔮 AI กำลังปรับปรุง Prompt ของคุณ..."):
+            response = requests.post(url, headers=headers, json=data)
+            response.raise_for_status()
+            
+            result = response.json()
+            return result['choices'][0]['message']['content']
+            
+    except requests.exceptions.HTTPError as e:
+        error_info = e.response.json().get('error', {})
+        error_code = error_info.get('code', 'unknown')
+        error_message = error_info.get('message', 'Unknown error')
+        
+        st.error(f"⚠️ ข้อผิดพลาด {e.response.status_code} ({error_code}): {error_message}")
+        
+        if e.response.status_code == 402:
+            st.markdown("""
+            💡 วิธีแก้ปัญหา:
+            1. ตรวจสอบเครดิตคงเหลือใน [OpenRouter Dashboard](https://openrouter.ai/account)
+            2. ตรวจสอบราคาโมเดลใน [OpenRouter Pricing](https://openrouter.ai/pricing)
+            """)
+        return None
+        
+    except requests.exceptions.ConnectionError:
+        st.error("🚨 ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ OpenRouter ได้ โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของคุณ")
+        return None
+
+    except requests.exceptions.Timeout:
+        st.error("🚨 การเชื่อมต่อ API เกินเวลา โปรดลองใหม่อีกครั้ง")
+        return None
+
+    except Exception as e:
+        st.error(f"🚨 เกิดข้อผิดพลาดที่ไม่คาดคิด: {str(e)}")
+        return None
 
 # ตัวอย่างชุดคำสั่ง
 EXAMPLE_TEMPLATES = {
