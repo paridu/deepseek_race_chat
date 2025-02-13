@@ -182,7 +182,6 @@ EXAMPLE_TEMPLATES = {
 5. ใส่ context และคำอธิบายที่จำเป็น"""
     }
 }
-}
 
 # ตั้งค่าหน้าเพจ
 st.set_page_config(page_title="RACE Prompt Generator", page_icon="🚀", layout="wide")
@@ -194,9 +193,6 @@ st.markdown("""
         <p style='text-align: center; color: #0e1117;'>สร้าง Prompt ระดับมืออาชีพด้วย AI จาก OpenRouter</p>
     </div>
     """, unsafe_allow_html=True)
-
-st.title("🚀 RACE Framework Prompt Generator")
-st.caption("สร้าง Prompt ระดับมืออาชีพด้วย AI จาก OpenRouter")
 
 # Sidebar configuration
 with st.sidebar:
@@ -319,5 +315,19 @@ if submitted:
     
     if result:
         st.markdown(f"```{result}```")
-        st.download_button("💾 ดาวน์โหลด Prompt", result, 
-                          file_name="generated_prompt.txt", mime="text/plain")
+        
+        # เพิ่มปุ่มดาวน์โหลดและคัดลอก
+        col1, col2 = st.columns(2)
+        with col1:
+            st.download_button(
+                "💾 ดาวน์โหลด Prompt",
+                result,
+                file_name="generated_prompt.txt",
+                mime="text/plain"
+            )
+        with col2:
+            st.button(
+                "📋 คัดลอกไปยังคลิปบอร์ด",
+                help="คลิกเพื่อคัดลอก Prompt ไปยังคลิปบอร์ด",
+                on_click=lambda: st.write('<script>navigator.clipboard.writeText(`' + result + '`);</script>', unsafe_allow_html=True)
+            )
