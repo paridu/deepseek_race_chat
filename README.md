@@ -1,6 +1,6 @@
 
 # deepseek_race_chat
-https://deepseekracechat-pbw22vxb39byk9fbyxvrhi.streamlit.app/
+[https://deepseekracechat-pbw22vxb39byk9fbyxvrhi.streamlit.app/](https://deepseekracechat-pbw22vxb39byk9fbyxvrhi.streamlit.app/)
 
 Prompt for coding with Race Framework
 # RACE Framework Form Generator with AI Enhancement
