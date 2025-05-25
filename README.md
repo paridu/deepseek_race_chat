@@ -1,5 +1,5 @@
 
-# deepseek_race_chat
+# Multi-Framework Prompt Generator
 [https://deepseekracechat-pbw22vxb39byk9fbyxvrhi.streamlit.app/](https://deepseekracechat-pbw22vxb39byk9fbyxvrhi.streamlit.app/)
 
 Prompt for coding with Race Framework
